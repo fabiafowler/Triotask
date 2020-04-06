@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  flaskapp:
+    build: ./Fridge
+    ports:
+    - target: 5000
+      published: 5000
+      protocol: tcp
+    depends_on:
+    - mysql
+  mysql:
+    image: mysql:5.7
+    environment: 
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: flaskapp
+    container_name: mysql
+    ports:
+    - target: 3306
+      published: 3306
+      protocol: tcp
+  nginx:
+    image: nginx:latest
+    ports:
+    - target: 80
+      published: 80
+      protocol: tcp
+    volumes:
+    - type: bind
+      source: ./nginx/nginx.conf
+      target: /etc/nginx/nginx.conf
